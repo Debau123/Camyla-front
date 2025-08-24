@@ -1,0 +1,239 @@
+@import "tailwindcss";
+@import "swiper/css";
+@import "swiper/css/effect-coverflow";
+@import "swiper/css/navigation";
+@import "swiper/css/pagination";
+
+/* --------- Tema base (Tailwind v4) --------- */
+:root {
+  --background: #0b0e12;  /* fondo oscuro base */
+  --foreground: #ededed;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --background: #ffffff;
+    --foreground: #171717;
+  }
+}
+
+/* --------- Fondo + animación “flow” con TU imagen --------- */
+/* ⚠️ Cambia a .jpg si tu archivo es JPEG */
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+
+  /* Fondo base (estático) */
+  background: var(--background) url("/fondo-oscuro-denso.webp") center / cover fixed no-repeat;
+
+  /* Necesario para que el ::before quede por ENCIMA del fondo y por DEBAJO del contenido */
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Capa animada encima del fondo */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+
+  /* ⚠️ Cambia a .jpg si corresponde */
+  background: url("/fondo-oscuro-denso.webp") center / 110% no-repeat;
+
+  opacity: 0.28;
+  mix-blend-mode: lighten;
+
+  /* Animación fluida (paneo) + zoom sutil */
+  animation: flow 28s linear infinite alternate, zoom 32s ease-in-out infinite alternate;
+
+  /* Coloca la capa entre el fondo del body y el contenido */
+  z-index: 0;
+
+  /* No intercepta clics/scroll */
+  pointer-events: none;
+
+  filter: saturate(1.05) contrast(1.04);
+}
+
+
+
+
+/* Paneo suave */
+@keyframes flow {
+  0%   { background-position: 0% 0%; }
+  50%  { background-position: 60% 40%; }
+  100% { background-position: 100% 80%; }
+}
+
+/* Zoom muy leve (Ken Burns) */
+@keyframes zoom {
+  0%   { transform: scale(1.06); }
+  100% { transform: scale(1.12); }
+}
+
+
+/* Detalles visuales para que “respire” con tu diseño */
+.omla-swiper { padding-block: 1rem; }
+.omla-swiper .swiper-slide {
+  transition: transform .35s ease, filter .35s ease, opacity .35s ease;
+  filter: saturate(1.05) contrast(1.02);
+}
+.omla-swiper .swiper-slide:not(.swiper-slide-active) {
+  opacity: .75;
+  filter: blur(.2px) saturate(.95) contrast(.98);
+}
+.omla-swiper .swiper-pagination-bullet {
+  background: linear-gradient(90deg,#d4af37,#f4d169);
+  opacity:.4;
+}
+.omla-swiper .swiper-pagination-bullet-active { opacity:1; }
+/* Para que no recorte el slide de la derecha/izquierda */
+.omla-swiper { overflow: visible; }
+
+/* Base: siempre visible, sin degradado */
+.split-parent .split-char {
+  display: inline-block;
+  color: inherit;         /* <- importante para color sólido */
+  background: none;       /* <- evita heredar gradiente por defecto */
+}
+
+/* Solo si quieres degradado/dorado metálico */
+.gradient-text {
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.gradient-text .split-char {
+  background: inherit;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;     /* <- solo en modo degradado */
+}
+:root {
+  --gold-300: #facc15; /* amber-400 aprox */
+  --gold-400: #f59e0b; /* amber-500 */
+  --gold-600: #b45309; /* amber-700 */
+}
+
+/* util si quieres una clase */
+.gold-text {
+  color: var(--gold-300);
+}
+:root {
+  --sticker-rotate: 30deg;
+  --sticker-p: 10px;
+  --sticker-peelback-hover: 30%;
+  --sticker-peelback-active: 40%;
+  --sticker-peel-easing: power3.out;
+  --sticker-peel-hover-easing: power2.out;
+  --sticker-start: calc(-1 * var(--sticker-p));
+  --sticker-end: calc(100% + var(--sticker-p));
+  --sticker-shadow-opacity: 0.6;
+  --sticker-lighting-constant: 0.1;
+  --peel-direction: 0deg;
+}
+
+.sticker-container {
+  position: relative;
+  transform: rotate(var(--peel-direction));
+  transform-origin: center;
+}
+
+.sticker-container * {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sticker-main {
+  clip-path: polygon(var(--sticker-start) var(--sticker-start),
+      var(--sticker-end) var(--sticker-start),
+      var(--sticker-end) var(--sticker-end),
+      var(--sticker-start) var(--sticker-end));
+  transition: clip-path 0.6s ease-out;
+  filter: url(#dropShadow);
+}
+
+.sticker-main > * {
+  transform: rotate(calc(-1 * var(--peel-direction)));
+}
+
+.sticker-lighting {
+  filter: url(#pointLight);
+}
+
+.sticker-container:hover .sticker-main,
+.sticker-container.touch-active .sticker-main {
+  clip-path: polygon(var(--sticker-start) var(--sticker-peelback-hover),
+      var(--sticker-end) var(--sticker-peelback-hover),
+      var(--sticker-end) var(--sticker-end),
+      var(--sticker-start) var(--sticker-end));
+}
+
+.sticker-container:active .sticker-main {
+  clip-path: polygon(var(--sticker-start) var(--sticker-peelback-active),
+      var(--sticker-end) var(--sticker-peelback-active),
+      var(--sticker-end) var(--sticker-end),
+      var(--sticker-start) var(--sticker-end));
+}
+
+.sticker-image {
+  transform: rotate(var(--sticker-rotate));
+}
+
+.flap {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: calc(-100% - var(--sticker-p) - var(--sticker-p));
+  clip-path: polygon(var(--sticker-start) var(--sticker-start),
+      var(--sticker-end) var(--sticker-start),
+      var(--sticker-end) var(--sticker-start),
+      var(--sticker-start) var(--sticker-start));
+  transform: scaleY(-1);
+  transition: all 0.6s ease-out;
+}
+
+.flap > * {
+  transform: rotate(calc(-1 * var(--peel-direction)));
+}
+
+.sticker-container:hover .flap,
+.sticker-container.touch-active .flap {
+  clip-path: polygon(var(--sticker-start) var(--sticker-start),
+      var(--sticker-end) var(--sticker-start),
+      var(--sticker-end) var(--sticker-peelback-hover),
+      var(--sticker-start) var(--sticker-peelback-hover));
+  top: calc(-100% + 2 * var(--sticker-peelback-hover) - 1px);
+}
+
+.sticker-container:active .flap {
+  clip-path: polygon(var(--sticker-start) var(--sticker-start),
+      var(--sticker-end) var(--sticker-start),
+      var(--sticker-end) var(--sticker-peelback-active),
+      var(--sticker-start) var(--sticker-peelback-active));
+  top: calc(-100% + 2 * var(--sticker-peelback-active) - 1px);
+}
+
+.flap-lighting {
+  filter: url(#pointLightFlipped);
+}
+
+.flap-image {
+  transform: rotate(var(--sticker-rotate));
+  filter: url(#expandAndFill);
+}
+
+.draggable {
+  /* position: absolute;  ← quítalo */
+  cursor: grab;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+.draggable:active {
+  cursor: grabbing;
+}

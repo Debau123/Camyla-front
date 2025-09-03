@@ -37,7 +37,7 @@ function NavLink({ href, label }: { href: string; label: string }) {
   );
 }
 
-export default function Navbar() {
+export default function Navbar({ user }: { user: any | null }) {
   const pathname = usePathname();
 
   return (
@@ -47,27 +47,17 @@ export default function Navbar() {
         <div className="mx-auto max-w-6xl px-4">
           <div className="rounded-full border border-white/15 bg-white/10 backdrop-blur-md shadow-lg">
             <div className="flex h-12 items-center justify-between px-4">
-              {/* Marca: LOGO + OMLA con degradado */}
+              {/* Marca */}
               <Link href="/" className="flex items-center gap-3" aria-label="OMLA">
                 <Image
-                  src="/logo-camyla-white.png"   // <-- usa el mismo archivo que en el SplashIntro
+                  src="/logo-camyla-white.png"
                   alt="OMLA logo"
                   width={120}
                   height={28}
                   priority
                   className="h-6 w-auto"
                 />
-                <span
-                  className="
-                    hidden sm:inline-block font-semibold uppercase tracking-[0.28em]
-                    text-transparent bg-clip-text
-                    [background-clip:text] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]
-                    drop-shadow-[0_1px_1px_rgba(0,0,0,0.45)]
-                    bg-[linear-gradient(90deg,#d4af37_0%,#f4d169_35%,#f8e08e_55%,#f4d169_75%,#d4af37_100%)]
-                  "
-                >
-                  
-                </span>
+                <span className="hidden sm:inline-block font-semibold uppercase tracking-[0.28em] text-transparent bg-clip-text [background-clip:text] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] drop-shadow-[0_1px_1px_rgba(0,0,0,0.45)] bg-[linear-gradient(90deg,#d4af37_0%,#f4d169_35%,#f8e08e_55%,#f4d169_75%,#d4af37_100%)]" />
               </Link>
 
               {/* Links desktop */}
@@ -98,13 +88,31 @@ export default function Navbar() {
                   </span>
                 </Link>
 
-                <Link
-                  href="/cuenta"
-                  className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/10 p-2 text-white hover:bg-white/15"
-                  title="Cuenta"
-                >
-                  <UserIcon className="h-5 w-5" />
-                </Link>
+                {/* Cuenta / Login-Logout */}
+                {!user ? (
+                  <a
+                    href="/auth/login"  // ⬅️ rutas automáticas del middleware v4
+                    className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-sm text-white/90 hover:bg-white/15"
+                    title="Login"
+                  >
+                    <UserIcon className="h-5 w-5" />
+                    <span className="hidden sm:inline">Login</span>
+                  </a>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <span className="hidden sm:inline text-sm text-white/80 max-w-[160px] truncate">
+                      {user.name || user.email}
+                    </span>
+                    <a
+                      href="/auth/logout" // ⬅️ rutas automáticas del middleware v4
+                      className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-sm text-white/90 hover:bg-white/15"
+                      title="Logout"
+                    >
+                      <UserIcon className="h-5 w-5" />
+                      <span className="hidden sm:inline">Logout</span>
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
           </div>

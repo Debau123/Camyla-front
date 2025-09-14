@@ -3,18 +3,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
 import {
-  ShoppingBagIcon,
-  MagnifyingGlassIcon,
-  UserIcon,
   HomeIcon,
   Squares2X2Icon,
   InformationCircleIcon,
+  StarIcon,
 } from "@heroicons/react/24/outline";
 
 const nav = [
   { href: "/", label: "Inicio", icon: HomeIcon },
-  { href: "/catalogo", label: "Catálogo", icon: Squares2X2Icon },
+  { href: "/la-original", label: "La Original", icon: Squares2X2Icon },
+  { href: "/4-etapas", label: "4 Etapas", icon: StarIcon },
   { href: "/sobre", label: "Sobre", icon: InformationCircleIcon },
 ];
 
@@ -37,7 +37,7 @@ function NavLink({ href, label }: { href: string; label: string }) {
   );
 }
 
-export default function Navbar({ user }: { user: any | null }) {
+export default function Navbar() {
   const pathname = usePathname();
 
   return (
@@ -57,7 +57,6 @@ export default function Navbar({ user }: { user: any | null }) {
                   priority
                   className="h-6 w-auto"
                 />
-                <span className="hidden sm:inline-block font-semibold uppercase tracking-[0.28em] text-transparent bg-clip-text [background-clip:text] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] drop-shadow-[0_1px_1px_rgba(0,0,0,0.45)] bg-[linear-gradient(90deg,#d4af37_0%,#f4d169_35%,#f8e08e_55%,#f4d169_75%,#d4af37_100%)]" />
               </Link>
 
               {/* Links desktop */}
@@ -67,53 +66,8 @@ export default function Navbar({ user }: { user: any | null }) {
                 ))}
               </nav>
 
-              {/* Acciones */}
-              <div className="flex items-center gap-2">
-                <button
-                  className="hidden md:inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-sm text-white/90 hover:bg-white/15"
-                  title="Buscar (pronto)"
-                >
-                  <MagnifyingGlassIcon className="h-5 w-5" />
-                  <span className="hidden lg:inline">Buscar</span>
-                </button>
-
-                <Link
-                  href="/carrito"
-                  className="relative inline-flex items-center justify-center rounded-full border border-white/10 bg-white/10 p-2 text-white hover:bg-white/15"
-                  title="Carrito"
-                >
-                  <ShoppingBagIcon className="h-5 w-5" />
-                  <span className="absolute -top-1 -right-1 h-4 min-w-4 rounded-full bg-white/90 px-1 text-[10px] leading-4 text-black">
-                    0
-                  </span>
-                </Link>
-
-                {/* Cuenta / Login-Logout */}
-                {!user ? (
-                  <a
-                    href="/auth/login"  // ⬅️ rutas automáticas del middleware v4
-                    className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-sm text-white/90 hover:bg-white/15"
-                    title="Login"
-                  >
-                    <UserIcon className="h-5 w-5" />
-                    <span className="hidden sm:inline">Login</span>
-                  </a>
-                ) : (
-                  <div className="flex items-center gap-2">
-                    <span className="hidden sm:inline text-sm text-white/80 max-w-[160px] truncate">
-                      {user.name || user.email}
-                    </span>
-                    <a
-                      href="/auth/logout" // ⬅️ rutas automáticas del middleware v4
-                      className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-sm text-white/90 hover:bg-white/15"
-                      title="Logout"
-                    >
-                      <UserIcon className="h-5 w-5" />
-                      <span className="hidden sm:inline">Logout</span>
-                    </a>
-                  </div>
-                )}
-              </div>
+              {/* Espacio vacío para mantener el balance visual */}
+              <div className="w-20"></div>
             </div>
           </div>
         </div>

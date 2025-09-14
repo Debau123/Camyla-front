@@ -1,10 +1,15 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import ShowcaseCarousel from "@/components/ShowcaseCarousel";
+import ContactModal from "@/components/ContactModal";
 import {
   Squares2X2Icon,
-  ShoppingBagIcon,
+  ChatBubbleLeftRightIcon,
   TruckIcon,
   ShieldCheckIcon,
+  EnvelopeIcon,
 } from "@heroicons/react/24/outline";
 
 import HeaderTitle from "@/components/HeaderTitle";
@@ -12,6 +17,8 @@ import UspStrip from "@/components/UspStrip";
 
 
 export default function Home() {
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+
   return (
     <main className="mx-auto max-w-6xl px-4 py-16 space-y-20">
       
@@ -20,19 +27,19 @@ export default function Home() {
         <div className="mx-auto max-w-3xl text-center">
           <HeaderTitle />
           <p className="mt-4 text-white/80 text-lg">
-            Bolis, camisetas y pegatinas con estilo. Calidad premium y envío a tu puerta. Hola que tal
+            Bordados artesanales únicos y personalizados. Cada pieza cuenta una historia especial.
           </p>
           
 
           <div className="mt-8 flex items-center justify-center gap-3">
-            <Link
-              href="/catalogo"
-              aria-label="Ir al catálogo completo"
+            <button
+              onClick={() => setIsContactModalOpen(true)}
+              aria-label="Hacer un pedido personalizado"
               className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-5 py-2.5 text-white hover:bg-white/15 backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-amber-400/40"
             >
-              <Squares2X2Icon className="h-5 w-5" />
-              Ver catálogo
-            </Link>
+              <ChatBubbleLeftRightIcon className="h-5 w-5" />
+              Hacer pedido
+            </button>
             <Link
               href="#como-funciona"
               aria-label="Bajar a la sección Cómo funciona"
@@ -52,7 +59,7 @@ export default function Home() {
       {/* DESTACADOS + CARRUSEL */}
       <section id="destacados" className="space-y-6" aria-label="Destacados">
         <div className="mx-auto max-w-3xl text-center space-y-2">
-          <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
+          <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-white">
             Descubre lo que viene
           </h2>
           <p className="text-white/70">
@@ -68,60 +75,67 @@ export default function Home() {
 
       {/* CÓMO FUNCIONA */}
       <section id="como-funciona" className="space-y-8" aria-label="Cómo funciona">
-        <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-center">Cómo funciona</h2>
+        <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-center text-white">Cómo funciona</h2>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <div className="rounded-2xl border border-white/15 bg-white/10 p-5 backdrop-blur-md">
             <div className="flex items-center gap-3">
               <Squares2X2Icon className="h-6 w-6 text-white/90" />
-              <h3 className="font-semibold">1. Explora</h3>
+              <h3 className="font-semibold text-white">1. Explora</h3>
             </div>
             <p className="mt-2 text-sm text-white/80">
-              Descubre categorías y colecciones con diseños actuales.
+              Descubre nuestra colección y las 4 etapas de nuestro proceso artesanal.
             </p>
           </div>
 
           <div className="rounded-2xl border border-white/15 bg-white/10 p-5 backdrop-blur-md">
             <div className="flex items-center gap-3">
-              <ShoppingBagIcon className="h-6 w-6 text-white/90" />
-              <h3 className="font-semibold">2. Elige y añade</h3>
+              <ChatBubbleLeftRightIcon className="h-6 w-6 text-white/90" />
+              <h3 className="font-semibold text-white">2. Contacta</h3>
             </div>
             <p className="mt-2 text-sm text-white/80">
-              Escoge talla, color o pack y añádelo al carrito en un click.
+              Escríbenos por WhatsApp o email para conversar sobre tu idea personalizada.
             </p>
           </div>
 
           <div className="rounded-2xl border border-white/15 bg-white/10 p-5 backdrop-blur-md">
             <div className="flex items-center gap-3">
               <ShieldCheckIcon className="h-6 w-6 text-white/90" />
-              <h3 className="font-semibold">3. Pago seguro</h3>
+              <h3 className="font-semibold text-white">3. Diseñamos</h3>
             </div>
             <p className="mt-2 text-sm text-white/80">
-              Checkout protegido. (Integraremos Stripe al final, como acordamos).
+              Creamos un diseño único para ti con técnicas artesanales tradicionales.
             </p>
           </div>
 
           <div className="rounded-2xl border border-white/15 bg-white/10 p-5 backdrop-blur-md">
             <div className="flex items-center gap-3">
               <TruckIcon className="h-6 w-6 text-white/90" />
-              <h3 className="font-semibold">4. Producción & envío</h3>
+              <h3 className="font-semibold text-white">4. Entregamos</h3>
             </div>
             <p className="mt-2 text-sm text-white/80">
-              Impresión bajo demanda y envío rápido. (Conectaremos Gelato al final).
+              Tu pieza única terminada y lista para contar su historia especial.
             </p>
           </div>
         </div>
 
         <div className="pt-2 text-center">
-          <Link
-            href="/catalogo"
-            aria-label="Ir al catálogo desde Cómo funciona"
+          <button
+            onClick={() => setIsContactModalOpen(true)}
+            aria-label="Hacer un pedido desde Cómo funciona"
             className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-5 py-2.5 text-white hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-amber-400/40"
           >
-            Ir al catálogo
-          </Link>
+            <EnvelopeIcon className="h-5 w-5" />
+            Empezar mi pedido
+          </button>
         </div>
       </section>
+
+      {/* Modal de contacto */}
+      <ContactModal 
+        isOpen={isContactModalOpen} 
+        onClose={() => setIsContactModalOpen(false)} 
+      />
     </main>
   );
 }

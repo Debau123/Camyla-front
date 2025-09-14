@@ -25,6 +25,15 @@ export default function SplashIntro() {
 
     setShow(true);
 
+    // Inyectar estilo para ocultar el contenido principal
+    const style = document.createElement("style");
+    style.id = "splash-hide";
+    style.textContent = `
+      body > div:not(#SplashRoot) { visibility: hidden !important; }
+      nav, main, footer { visibility: hidden !important; }
+    `;
+    document.head.appendChild(style);
+
     const prefersReduced =
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -33,11 +42,17 @@ export default function SplashIntro() {
     const t = setTimeout(() => {
       setShow(false);
       sessionStorage.setItem("omlaSplashSeen", "1"); // marca como visto
+      // Remover el estilo que oculta el contenido
+      const style = document.getElementById("splash-hide");
+      if (style) style.remove();
     }, duration);
 
     const close = () => {
       setShow(false);
       sessionStorage.setItem("omlaSplashSeen", "1");
+      // Remover el estilo que oculta el contenido
+      const style = document.getElementById("splash-hide");
+      if (style) style.remove();
     };
     window.addEventListener("keydown", close);
     window.addEventListener("click", close);
@@ -46,6 +61,9 @@ export default function SplashIntro() {
       clearTimeout(t);
       window.removeEventListener("keydown", close);
       window.removeEventListener("click", close);
+      // Asegurar que se remueve el estilo al limpiar
+      const style = document.getElementById("splash-hide");
+      if (style) style.remove();
     };
   }, [pathname]);
 

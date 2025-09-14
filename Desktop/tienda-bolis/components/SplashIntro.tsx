@@ -87,7 +87,12 @@ export default function SplashIntro() {
         zIndex: 99999,
         display: "grid",
         placeItems: "center",
-        backgroundColor: "transparent", // Transparente para ver el fondo de la página
+        // Copiamos el mismo fondo que tiene el body
+        backgroundColor: "#0b0e12",
+        backgroundImage: "url('/fondo-oscuro-denso.webp')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
       }}
     >
       {/* Overlay transparente: se ve tu fondo animado */}

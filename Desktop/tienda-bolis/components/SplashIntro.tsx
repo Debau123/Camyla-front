@@ -29,8 +29,9 @@ export default function SplashIntro() {
     const style = document.createElement("style");
     style.id = "splash-hide";
     style.textContent = `
-      body > div:not(#SplashRoot) { visibility: hidden !important; }
-      nav, main, footer { visibility: hidden !important; }
+      body > div:not(#SplashRoot) { display: none !important; }
+      main, nav, footer, header, section { display: none !important; }
+      #__next > *:not(#SplashRoot) { display: none !important; }
     `;
     document.head.appendChild(style);
 
@@ -86,6 +87,7 @@ export default function SplashIntro() {
         zIndex: 99999,
         display: "grid",
         placeItems: "center",
+        backgroundColor: "#000", // Fondo negro sólido
       }}
     >
       {/* Overlay transparente: se ve tu fondo animado */}

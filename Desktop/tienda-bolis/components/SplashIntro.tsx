@@ -87,7 +87,7 @@ export default function SplashIntro() {
         zIndex: 99999,
         display: "grid",
         placeItems: "center",
-        backgroundColor: "#000", // Fondo negro sólido
+        backgroundColor: "transparent", // Transparente para ver el fondo de la página
       }}
     >
       {/* Overlay transparente: se ve tu fondo animado */}

@@ -12,6 +12,7 @@ import {
   StarIcon,
   ChevronDownIcon,
   ShoppingBagIcon,
+  CubeIcon,
 } from "@heroicons/react/24/outline";
 
 // Textos que van rotando para "Sobre"
@@ -60,6 +61,33 @@ function NavLink({ href, label }: { href: string; label: string }) {
         }`}
       />
     </Link>
+  );
+}
+
+function DynamicMobileText() {
+  const [currentTextIndex, setCurrentTextIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsAnimating(true);
+      
+      setTimeout(() => {
+        setCurrentTextIndex((prev) => (prev + 1) % sobreTexts.length);
+        setIsAnimating(false);
+      }, 200);
+      
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <span className={`transition-all duration-200 ease-in-out transform ${
+      isAnimating ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
+    }`}>
+      {sobreTexts[currentTextIndex]}
+    </span>
   );
 }
 
@@ -224,56 +252,86 @@ export default function Navbar() {
       {/* BOTTOM TAB BAR (solo móvil) */}
       <nav className="BottomTab md:hidden fixed bottom-4 inset-x-0 z-50">
         <div className="mx-auto max-w-lg px-4">
-          <div className="flex items-center justify-between rounded-full border border-white/15 bg-white/10 backdrop-blur-md shadow-lg px-2 py-1.5">
-            {/* Inicio */}
-            <Link
-              href="/"
-              className="flex flex-col items-center gap-0.5 px-2 py-1.5 text-[10px] text-white/80"
-              aria-current={pathname === "/" ? "page" : undefined}
-            >
-              <HomeIcon className={`h-4 w-4 ${pathname === "/" ? "text-white" : "text-white/70"}`} />
-              <span className={pathname === "/" ? "text-white" : "text-white/70"}>Inicio</span>
-            </Link>
+          <div className="grid grid-cols-2 gap-2">
+            {/* Primera fila */}
+            <div className="flex items-center justify-between rounded-full border border-white/15 bg-white/10 backdrop-blur-md shadow-lg px-2 py-1.5">
+              {/* Inicio */}
+              <Link
+                href="/"
+                className="flex flex-col items-center gap-0.5 px-2 py-1.5 text-[10px] text-white/80"
+                aria-current={pathname === "/" ? "page" : undefined}
+              >
+                <HomeIcon className={`h-4 w-4 ${pathname === "/" ? "text-white" : "text-white/70"}`} />
+                <span className={pathname === "/" ? "text-white" : "text-white/70"}>Inicio</span>
+              </Link>
 
-            {/* Camisetas */}
-            <Link
-              href="/camisetas"
-              className="flex flex-col items-center gap-0.5 px-2 py-1.5 text-[10px] text-white/80"
-              aria-current={pathname === "/camisetas" ? "page" : undefined}
-            >
-              <ShoppingBagIcon className={`h-4 w-4 ${pathname === "/camisetas" ? "text-white" : "text-white/70"}`} />
-              <span className={pathname === "/camisetas" ? "text-white" : "text-white/70"}>Camisetas</span>
-            </Link>
+              {/* Camisetas */}
+              <Link
+                href="/camisetas"
+                className="flex flex-col items-center gap-0.5 px-2 py-1.5 text-[10px] text-white/80"
+                aria-current={pathname === "/camisetas" ? "page" : undefined}
+              >
+                <ShoppingBagIcon className={`h-4 w-4 ${pathname === "/camisetas" ? "text-white" : "text-white/70"}`} />
+                <span className={pathname === "/camisetas" ? "text-white" : "text-white/70"}>Camisetas</span>
+              </Link>
 
-            {/* Accesorios */}
-            <Link
-              href="/accesorios"
-              className="flex flex-col items-center gap-0.5 px-2 py-1.5 text-[10px] text-white/80"
-              aria-current={pathname === "/accesorios" ? "page" : undefined}
-            >
-              <StarIcon className={`h-4 w-4 ${pathname === "/accesorios" ? "text-white" : "text-white/70"}`} />
-              <span className={pathname === "/accesorios" ? "text-white" : "text-white/70"}>Accesorios</span>
-            </Link>
+              {/* Accesorios */}
+              <Link
+                href="/accesorios"
+                className="flex flex-col items-center gap-0.5 px-2 py-1.5 text-[10px] text-white/80"
+                aria-current={pathname === "/accesorios" ? "page" : undefined}
+              >
+                <StarIcon className={`h-4 w-4 ${pathname === "/accesorios" ? "text-white" : "text-white/70"}`} />
+                <span className={pathname === "/accesorios" ? "text-white" : "text-white/70"}>Accesorios</span>
+              </Link>
+            </div>
 
-            {/* La Original */}
-            <Link
-              href="/la-original"
-              className="flex flex-col items-center gap-0.5 px-2 py-1.5 text-[10px] text-white/80"
-              aria-current={pathname === "/la-original" ? "page" : undefined}
-            >
-              <Squares2X2Icon className={`h-4 w-4 ${pathname === "/la-original" ? "text-white" : "text-white/70"}`} />
-              <span className={pathname === "/la-original" ? "text-white" : "text-white/70"}>La Original</span>
-            </Link>
+            {/* Segunda fila */}
+            <div className="flex items-center justify-between rounded-full border border-white/15 bg-white/10 backdrop-blur-md shadow-lg px-2 py-1.5">
+              {/* Artilugios */}
+              <Link
+                href="/artilugios"
+                className="flex flex-col items-center gap-0.5 px-2 py-1.5 text-[10px] text-white/80"
+                aria-current={pathname === "/artilugios" ? "page" : undefined}
+              >
+                <CubeIcon className={`h-4 w-4 ${pathname === "/artilugios" ? "text-white" : "text-white/70"}`} />
+                <span className={pathname === "/artilugios" ? "text-white" : "text-white/70"}>Artilugios</span>
+              </Link>
 
-            {/* 4 Etapas */}
-            <Link
-              href="/4-etapas"
-              className="flex flex-col items-center gap-0.5 px-2 py-1.5 text-[10px] text-white/80"
-              aria-current={pathname === "/4-etapas" ? "page" : undefined}
-            >
-              <InformationCircleIcon className={`h-4 w-4 ${pathname === "/4-etapas" ? "text-white" : "text-white/70"}`} />
-              <span className={pathname === "/4-etapas" ? "text-white" : "text-white/70"}>4 Etapas</span>
-            </Link>
+              {/* La Original */}
+              <Link
+                href="/la-original"
+                className="flex flex-col items-center gap-0.5 px-2 py-1.5 text-[10px] text-white/80"
+                aria-current={pathname === "/la-original" ? "page" : undefined}
+              >
+                <Squares2X2Icon className={`h-4 w-4 ${pathname === "/la-original" ? "text-white" : "text-white/70"}`} />
+                <span className={pathname === "/la-original" ? "text-white" : "text-white/70"}>La Original</span>
+              </Link>
+
+              {/* 4 Etapas */}
+              <Link
+                href="/4-etapas"
+                className="flex flex-col items-center gap-0.5 px-2 py-1.5 text-[10px] text-white/80"
+                aria-current={pathname === "/4-etapas" ? "page" : undefined}
+              >
+                <InformationCircleIcon className={`h-4 w-4 ${pathname === "/4-etapas" ? "text-white" : "text-white/70"}`} />
+                <span className={pathname === "/4-etapas" ? "text-white" : "text-white/70"}>4 Etapas</span>
+              </Link>
+            </div>
+          </div>
+
+          {/* Tercera fila - Sobre dinámico */}
+          <div className="mt-2">
+            <div className="rounded-full border border-white/15 bg-white/10 backdrop-blur-md shadow-lg px-4 py-2 text-center">
+              <Link
+                href="/sobre"
+                className="flex flex-col items-center gap-1 text-[10px] text-white/80"
+                aria-current={pathname === "/sobre" ? "page" : undefined}
+              >
+                <InformationCircleIcon className={`h-4 w-4 ${pathname === "/sobre" ? "text-white" : "text-white/70"}`} />
+                <DynamicMobileText />
+              </Link>
+            </div>
           </div>
         </div>
       </nav>

@@ -64,6 +64,65 @@ function NavLink({ href, label }: { href: string; label: string }) {
   );
 }
 
+function MobileDropdown({ icon: Icon, label, items, pathname }: { 
+  icon: any; 
+  label: string; 
+  items: { href: string; label: string }[];
+  pathname: string;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  
+  // Verificar si alguna de las opciones del dropdown está activa
+  const isActive = items.some(item => pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href)));
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <div className="relative">
+      <button
+        onClick={toggleDropdown}
+        className={`flex flex-col items-center gap-1 px-3 py-2 text-[10px] ${isActive ? 'text-white' : 'text-white/70'}`}
+      >
+        <Icon className={`h-4 w-4 ${isActive ? 'text-white' : 'text-white/70'}`} />
+        <span className={isActive ? 'text-white' : 'text-white/70'}>{label}</span>
+      </button>
+      
+      {isOpen && (
+        <>
+          {/* Overlay para cerrar */}
+          <div 
+            className="fixed inset-0 z-40" 
+            onClick={() => setIsOpen(false)}
+          />
+          
+          {/* Dropdown */}
+          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-32 bg-black/90 backdrop-blur-md border border-white/10 rounded-xl shadow-xl overflow-hidden z-50">
+            {items.map((item) => {
+              const itemActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setIsOpen(false)}
+                  className={`block px-3 py-2 text-xs transition-all duration-200 ${
+                    itemActive
+                      ? "bg-yellow-400/20 text-yellow-400"
+                      : "text-white/80 hover:text-white hover:bg-white/10"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 function DynamicMobileText() {
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -251,87 +310,52 @@ export default function Navbar() {
 
       {/* BOTTOM TAB BAR (solo móvil) */}
       <nav className="BottomTab md:hidden fixed bottom-4 inset-x-0 z-50">
-        <div className="mx-auto max-w-lg px-4">
-          <div className="grid grid-cols-2 gap-2">
-            {/* Primera fila */}
-            <div className="flex items-center justify-between rounded-full border border-white/15 bg-white/10 backdrop-blur-md shadow-lg px-2 py-1.5">
-              {/* Inicio */}
-              <Link
-                href="/"
-                className="flex flex-col items-center gap-0.5 px-2 py-1.5 text-[10px] text-white/80"
-                aria-current={pathname === "/" ? "page" : undefined}
-              >
-                <HomeIcon className={`h-4 w-4 ${pathname === "/" ? "text-white" : "text-white/70"}`} />
-                <span className={pathname === "/" ? "text-white" : "text-white/70"}>Inicio</span>
-              </Link>
+        <div className="mx-auto max-w-sm px-4">
+          <div className="flex items-center justify-between rounded-full border border-white/15 bg-white/10 backdrop-blur-md shadow-lg px-3 py-2">
+            
+            {/* Inicio */}
+            <Link
+              href="/"
+              className="flex flex-col items-center gap-1 px-3 py-2 text-[10px] text-white/80"
+              aria-current={pathname === "/" ? "page" : undefined}
+            >
+              <HomeIcon className={`h-4 w-4 ${pathname === "/" ? "text-white" : "text-white/70"}`} />
+              <span className={pathname === "/" ? "text-white" : "text-white/70"}>Inicio</span>
+            </Link>
 
-              {/* Camisetas */}
-              <Link
-                href="/camisetas"
-                className="flex flex-col items-center gap-0.5 px-2 py-1.5 text-[10px] text-white/80"
-                aria-current={pathname === "/camisetas" ? "page" : undefined}
-              >
-                <ShoppingBagIcon className={`h-4 w-4 ${pathname === "/camisetas" ? "text-white" : "text-white/70"}`} />
-                <span className={pathname === "/camisetas" ? "text-white" : "text-white/70"}>Camisetas</span>
-              </Link>
+            {/* Productos - Dropdown móvil */}
+            <MobileDropdown 
+              icon={ShoppingBagIcon}
+              label="Productos"
+              items={[
+                { href: "/camisetas", label: "Camisetas" },
+                { href: "/accesorios", label: "Accesorios" },
+                { href: "/artilugios", label: "Artilugios" },
+              ]}
+              pathname={pathname}
+            />
 
-              {/* Accesorios */}
-              <Link
-                href="/accesorios"
-                className="flex flex-col items-center gap-0.5 px-2 py-1.5 text-[10px] text-white/80"
-                aria-current={pathname === "/accesorios" ? "page" : undefined}
-              >
-                <StarIcon className={`h-4 w-4 ${pathname === "/accesorios" ? "text-white" : "text-white/70"}`} />
-                <span className={pathname === "/accesorios" ? "text-white" : "text-white/70"}>Accesorios</span>
-              </Link>
-            </div>
+            {/* Colecciones - Dropdown móvil */}
+            <MobileDropdown 
+              icon={Squares2X2Icon}
+              label="Colecciones"
+              items={[
+                { href: "/la-original", label: "La Original" },
+                { href: "/4-etapas", label: "4 Etapas" },
+              ]}
+              pathname={pathname}
+            />
 
-            {/* Segunda fila */}
-            <div className="flex items-center justify-between rounded-full border border-white/15 bg-white/10 backdrop-blur-md shadow-lg px-2 py-1.5">
-              {/* Artilugios */}
-              <Link
-                href="/artilugios"
-                className="flex flex-col items-center gap-0.5 px-2 py-1.5 text-[10px] text-white/80"
-                aria-current={pathname === "/artilugios" ? "page" : undefined}
-              >
-                <CubeIcon className={`h-4 w-4 ${pathname === "/artilugios" ? "text-white" : "text-white/70"}`} />
-                <span className={pathname === "/artilugios" ? "text-white" : "text-white/70"}>Artilugios</span>
-              </Link>
+            {/* Sobre - Dinámico */}
+            <Link
+              href="/sobre"
+              className="flex flex-col items-center gap-1 px-3 py-2 text-[10px] text-white/80"
+              aria-current={pathname === "/sobre" ? "page" : undefined}
+            >
+              <InformationCircleIcon className={`h-4 w-4 ${pathname === "/sobre" ? "text-white" : "text-white/70"}`} />
+              <DynamicMobileText />
+            </Link>
 
-              {/* La Original */}
-              <Link
-                href="/la-original"
-                className="flex flex-col items-center gap-0.5 px-2 py-1.5 text-[10px] text-white/80"
-                aria-current={pathname === "/la-original" ? "page" : undefined}
-              >
-                <Squares2X2Icon className={`h-4 w-4 ${pathname === "/la-original" ? "text-white" : "text-white/70"}`} />
-                <span className={pathname === "/la-original" ? "text-white" : "text-white/70"}>La Original</span>
-              </Link>
-
-              {/* 4 Etapas */}
-              <Link
-                href="/4-etapas"
-                className="flex flex-col items-center gap-0.5 px-2 py-1.5 text-[10px] text-white/80"
-                aria-current={pathname === "/4-etapas" ? "page" : undefined}
-              >
-                <InformationCircleIcon className={`h-4 w-4 ${pathname === "/4-etapas" ? "text-white" : "text-white/70"}`} />
-                <span className={pathname === "/4-etapas" ? "text-white" : "text-white/70"}>4 Etapas</span>
-              </Link>
-            </div>
-          </div>
-
-          {/* Tercera fila - Sobre dinámico */}
-          <div className="mt-2">
-            <div className="rounded-full border border-white/15 bg-white/10 backdrop-blur-md shadow-lg px-4 py-2 text-center">
-              <Link
-                href="/sobre"
-                className="flex flex-col items-center gap-1 text-[10px] text-white/80"
-                aria-current={pathname === "/sobre" ? "page" : undefined}
-              >
-                <InformationCircleIcon className={`h-4 w-4 ${pathname === "/sobre" ? "text-white" : "text-white/70"}`} />
-                <DynamicMobileText />
-              </Link>
-            </div>
           </div>
         </div>
       </nav>

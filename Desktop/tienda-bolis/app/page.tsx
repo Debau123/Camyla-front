@@ -27,7 +27,8 @@ export default function Home() {
         <div className="mx-auto max-w-3xl text-center">
           <HeaderTitle />
           <p className="mt-4 text-white/80 text-lg">
-            Bordados artesanales únicos y personalizados. Cada pieza cuenta una historia especial.
+            Descubre el mundo de OMLA.<br />
+            Cada diseño cuenta una historia.
           </p>
           
 
